@@ -10,7 +10,7 @@ const App = () => (
     <Navbar />
 
     <Box sx={{ height: "200px" }}>
-      <Box sx={{ flexGrow: "1", padding: "2em" }} />
+      <Box sx={{ flexGrow: "1", padding: "3em" }} />
       <Routes>
         <Route path="/" element={<Movies />} />
         <Route path="movie/:id" element={<MovieInformation />} />

@@ -1,8 +1,9 @@
 // import { styled } from "@mui/styles";
 
-import { IconButton, Toolbar } from "@mui/material";
+import { Box, Drawer, IconButton, Toolbar } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
+const drawerWidth = 240;
 export const ToolbarCustomized = styled(Toolbar)(({ theme }) => ({
   height: "80px",
   display: "flex",
@@ -19,4 +20,15 @@ export const IconButtonCustomized = styled(IconButton)(({ theme }) => ({
   [theme.breakpoints.up("sm")]: {
     display: "none",
   },
+}));
+
+export const DrawerCustomized = styled(Box)(({ theme }) => ({
+  [theme.breakpoints.up("sm")]: {
+    width: drawerWidth,
+    flexShrink: 0,
+  },
+}));
+
+export const DrawerPaperCustomized = styled(Drawer)(({ theme }) => ({
+  width: drawerWidth,
 }));

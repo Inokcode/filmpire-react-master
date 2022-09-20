@@ -9,15 +9,25 @@ import {
   AppBar,
   Avatar,
   Button,
+  Drawer,
   IconButton,
   Toolbar,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { IconButtonCustomized, ToolbarCustomized } from "./navbarStyles";
+import Sidebar from "../Sidebar/Sidebar";
+import {
+  DrawerCustomized,
+  DrawerPaperCustomized,
+  IconButtonCustomized,
+  ToolbarCustomized,
+} from "./navbarStyles";
 
 const Navbar = () => {
+  const [mobileOpen, setMobileOpen] = useState(false);
+
   const theme = useTheme();
   const isMobile = useMediaQuery("(max-width:600px)");
   const isAuthenticated = true;
@@ -31,6 +41,7 @@ const Navbar = () => {
               color="inherit"
               edge="start"
               style={{ outline: "none" }}
+              onClick={() => setMobileOpen((prevMobileOpen) => !prevMobileOpen)}
             >
               <Menu />
             </IconButtonCustomized>
@@ -50,6 +61,12 @@ const Navbar = () => {
                 component={Link}
                 to={`/profile/:id`}
                 onClick={() => {}}
+                sx={{
+                  "&:hover": {
+                    color: "white !important",
+                    textDecoration: "none",
+                  },
+                }}
               >
                 {!isMobile && <>My Movies &nbsp;</>}
                 <Avatar
@@ -65,7 +82,23 @@ const Navbar = () => {
       </AppBar>
       {/* Sidebar */}
       <div>
-        <nav></nav>
+        <DrawerCustomized>
+          {isMobile ? (
+            <DrawerPaperCustomized
+              variant="temporary"
+              anchor="right"
+              open={mobileOpen}
+              onClose={() => setMobileOpen((prevMobileOpen) => !prevMobileOpen)}
+              ModalProps={{ keepMounted: true }}
+            >
+              <Sidebar setMobileOpen={setMobileOpen} />
+            </DrawerPaperCustomized>
+          ) : (
+            <DrawerPaperCustomized variant="permanent" open>
+              <Sidebar setMobileOpen={setMobileOpen} />
+            </DrawerPaperCustomized>
+          )}
+        </DrawerCustomized>
       </div>
     </>
   );
