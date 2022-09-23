@@ -15,7 +15,9 @@ import {
   Grid,
   Rating,
   Typography,
+  Modal,
 } from "@mui/material";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { selectGenreOrCategory } from "../../features/currentGenreOrCategorySlice";
@@ -35,9 +37,10 @@ const MovieInformation = () => {
     list: "/recommendations",
     movie_id: id,
   });
+  const [open, setOpen] = useState(false);
 
   // console.log(data);
-  console.log({ recommendations });
+  // console.log({ recommendations });
   if (!isFetching) {
     <Box display="flex" justifyContent="center" mt={3}>
       <CircularProgress size="8rem" />
@@ -106,7 +109,7 @@ const MovieInformation = () => {
                       xs={4}
                     >
                       <img
-                        src={`https://image.tmdb.org/t/p/w500/${character.profile_path}`}
+                        src={`https://image.tmdb.org/t/p/w500/${character?.profile_path}`}
                         style={{ width: "100px" }}
                       />
                       <Typography>{character.name}/</Typography>
@@ -138,7 +141,13 @@ const MovieInformation = () => {
                 >
                   IMDB
                 </Button>
-                <Button onClick={() => {}} href="#" endIcon={<Theaters />}>
+                <Button
+                  onClick={() => {
+                    setOpen(true);
+                  }}
+                  href="#"
+                  endIcon={<Theaters />}
+                >
                   Trailer
                 </Button>
               </ButtonGroup>
@@ -172,11 +181,32 @@ const MovieInformation = () => {
       <Box marginTop="5rem" width="100%">
         <Typography>You might also like</Typography>
         {recommendations ? (
-          <MovieList movies={recommendations} numberOfMovies={2} />
+          <MovieList movies={recommendations} numberOfMovies={12} />
         ) : (
           <Box>Sorry nothing was found.</Box>
         )}
       </Box>
+
+      <Modal
+        closeAfterTransition
+        open={open}
+        onClose={() => setOpen(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box>
+          {data?.videos?.results?.length > 0 && (
+            <iframe
+              autoPlay
+              frameBorder="0"
+              title="Trailer"
+              src={`https://www.youtube.com/embed/${data.videos.results[0].key}`}
+              allow="autoplay"
+            />
+          )}
+        </Box>
+      </Modal>
+      {/*  */}
     </Grid>
   );
 };
