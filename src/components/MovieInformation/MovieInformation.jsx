@@ -20,12 +20,24 @@ import { useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { selectGenreOrCategory } from "../../features/currentGenreOrCategorySlice";
 import { useGetMovieQuery } from "../../services/TMDB";
+import { useGetRecommendationsQuery } from "../../services/TMDB";
+import MovieList from "../MovieList/MovieList";
 
 const MovieInformation = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const { data, isFetching, error } = useGetMovieQuery(id);
-  console.log(data);
+  const {
+    data: recommendations,
+    isFetching: isRecommendationsFetching,
+    error: isRecommendationsError,
+  } = useGetRecommendationsQuery({
+    list: "/recommendations",
+    movie_id: id,
+  });
+
+  // console.log(data);
+  console.log({ recommendations });
   if (!isFetching) {
     <Box display="flex" justifyContent="center" mt={3}>
       <CircularProgress size="8rem" />
@@ -108,7 +120,7 @@ const MovieInformation = () => {
         </Grid>
         <Grid item container>
           <div>
-            <Grid xs={4}>
+            <Grid item xs={4}>
               <ButtonGroup size="small" variant="outlined">
                 <Button
                   target="_blank"
@@ -131,7 +143,7 @@ const MovieInformation = () => {
                 </Button>
               </ButtonGroup>
             </Grid>
-            <Grid xs={3}>
+            <Grid item xs={3}>
               <ButtonGroup size="small" variant="outlined">
                 <Button
                   onClick={addToFavorites}
@@ -157,6 +169,14 @@ const MovieInformation = () => {
           </div>
         </Grid>
       </Grid>
+      <Box marginTop="5rem" width="100%">
+        <Typography>You might also like</Typography>
+        {recommendations ? (
+          <MovieList movies={recommendations} numberOfMovies={2} />
+        ) : (
+          <Box>Sorry nothing was found.</Box>
+        )}
+      </Box>
     </Grid>
   );
 };
