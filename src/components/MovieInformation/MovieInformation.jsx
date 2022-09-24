@@ -77,10 +77,11 @@ const MovieInformation = () => {
             <Typography>{data?.vote_average}/10</Typography>
           </Box>
           <Typography>
-            {data?.runtime}min
+            {/* {data?.runtime}min
             {data?.spoken_languages.length > 0
               ? ` / ${data?.spoken_languages[0].name}`
-              : ""}
+              : ""} */}
+            {data?.runtime}min | {`Language: ${data?.spoken_languages[0].name}`}
           </Typography>
         </Grid>
         <Grid>
@@ -163,7 +164,7 @@ const MovieInformation = () => {
                   {isMovieFavorited ? "unfavorite" : "Favorite"}
                 </Button>
                 <Button
-                  onClick={addToFavorites}
+                  onClick={addToWatchlist}
                   endIcon={isMovieWatchlisted ? <Remove /> : <PlusOne />}
                 >
                   Watchlist

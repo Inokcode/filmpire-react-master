@@ -1,9 +1,11 @@
 import { TextField } from "@mui/material";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useLocation } from "react-router-dom";
 import { searchMovie } from "../../features/currentGenreOrCategorySlice";
 
 const Search = () => {
+  const location = useLocation();
   const [query, setQuery] = useState("");
   const dispatch = useDispatch();
 
@@ -13,6 +15,9 @@ const Search = () => {
       dispatch(searchMovie(query));
     }
   };
+  if (location.pathname !== "/") return null;
+
+  // console.log({ location });
   return (
     <div>
       <TextField
